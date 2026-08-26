@@ -2189,9 +2189,12 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                   </div>
                 </div>
               ) : (
-              <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.6fr_1fr] lg:gap-x-6 lg:gap-y-4 lg:items-start">
+              <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[1.6fr_1fr] lg:gap-6 lg:items-start">
+                {/* ЛЕВАЯ колонка (десктоп): поля. contents+order — чтобы мобильный порядок
+                    сохранился точь-в-точь, а на lg колонки стали независимыми (без наложений). */}
+                <div className="contents lg:block lg:space-y-4">
                 {/* Оригинальный номер — на всю строку */}
-                <div className="lg:col-start-1">
+                <div className="order-1">
                   <label className="form-label">
                     {t('inventoryPage.oemLabel')}
                   </label>
@@ -2222,7 +2225,7 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                 </div>
 
                 {/* Название — на всю строку */}
-                <div className="lg:col-start-1">
+                <div className="order-2">
                   <label className="form-label">
                     {t('inventoryPage.nameReq')}
                   </label>
@@ -2237,7 +2240,7 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                 </div>
 
                 {/* Состояние (слева) + Цена продажи и валюта (справа) — одна строка */}
-                <div className="grid grid-cols-2 gap-3 lg:col-start-1">
+                <div className="grid grid-cols-2 gap-3 order-3">
                   <div>
                     <label className="form-label">
                       {t('inventoryPage.conditionReq')}
@@ -2292,11 +2295,13 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                     </div>
                   </div>
                 </div>
+                </div>
 
-                {/* Правая колонка на десктопе: Фото + Место + предпросмотр карточки */}
-                <div className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1 lg:row-span-6 lg:sticky lg:top-2 lg:self-start">
+                {/* ПРАВАЯ колонка (десктоп): фото → место → предпросмотр. На lg — flex,
+                    чтобы order задавал порядок; на мобиле contents держат общий порядок. */}
+                <div className="contents lg:flex lg:flex-col lg:gap-4">
                 {/* Место хранения */}
-                <div className="order-1 lg:order-2">
+                <div className="order-4 lg:order-2">
                   <label className="form-label">{t('inventoryPage.storageLocation')}</label>
                   {storageLocations.length > 0 ? (
                     <StorageLocationCascade
@@ -2318,7 +2323,7 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                   )}
                 </div>
 
-                <div className="order-2 lg:order-1">
+                <div className="order-5 lg:order-1">
                   <label className="form-label">{t('inventoryPage.photos')} <span className="text-gray-400 font-normal">({photos.length + pendingPhotos.length}/{MAX_PHOTOS})</span></label>
                   {(photos.length + pendingPhotos.length) >= MAX_PHOTOS ? (
                     <div className="flex items-center justify-center gap-2 w-full h-24 sm:h-28 border-2 border-dashed border-gray-200 bg-gray-50 rounded-xl text-sm font-medium text-gray-400">
@@ -2390,7 +2395,7 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                 </div>
 
                 {/* Предпросмотр карточки — под местом хранения (десктоп) */}
-                <div className="hidden lg:block order-3 rounded-xl border border-gray-200 overflow-hidden">
+                <div className="hidden lg:block order-8 lg:order-3 rounded-xl border border-gray-200 overflow-hidden">
                   <div className="px-3 pt-2.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
                     {t('inventoryPage.previewLabel', { defaultValue: 'Предпросмотр' })}
                   </div>
@@ -2421,8 +2426,8 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                 </div>
                 </div>
 
-                {/* Источник (авто) — под фото */}
-                <div className="lg:col-start-1">
+                {/* Источник (авто) — на всю ширину под колонками */}
+                <div className="order-6 lg:col-span-2">
                   <label className="form-label">{t('inventoryPage.sourceVehicle')}</label>
                   <select
                     value={formData.vehicle_id || ''}
@@ -2453,8 +2458,8 @@ export function PartsInventoryModal({ item, categories, vehicles, storageLocatio
                   </p>
                 </div>
 
-                {/* Дополнительно — редкие поля свёрнуты (Вариант A) */}
-                <div className="lg:col-start-1">
+                {/* Дополнительно — редкие поля свёрнуты (Вариант A), на всю ширину */}
+                <div className="order-7 lg:col-span-2">
                   <button
                     type="button"
                     onClick={() => setShowMore((v) => !v)}
